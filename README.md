@@ -71,6 +71,7 @@ Before you begin, ensure you have the following installed:
 1. Start the application:
    ```bash
    cd subdomain-scanner
+   npm install
    npm run dev
    ```
    The application will start on http://localhost:3000 by default.
