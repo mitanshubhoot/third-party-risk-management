@@ -5359,8 +5359,7 @@ async function checkDHParameters(domain: string): Promise<{ strong: boolean; com
       rejectUnauthorized: false
     });
 
-    const finished = socket.getFinished();
-    const dhParam = finished ? finished.length : 0;
+    const dhParam = socket.getFinished()?.length ?? 0;
     socket.end();
 
     // DH parameters less than 2048 bits are considered weak
@@ -6766,9 +6765,33 @@ export async function POST(request: Request) {
     await Promise.all(
       processedResults.map(async (result) => {
         if (result.is_active) {
-          const headers = await checkSecurityHeaders(result.domain);
-          if (headers) {
-            result.security_headers = headers;
+          const headerChecks = await checkSecurityHeaders(result.domain);
+          if (headerChecks) {
+            result.security_headers = {
+              hsts: {
+                present: headerChecks.some(h => h.id === 'hsts-enforced' && h.status === 'pass'),
+                maxAge: undefined,
+                includeSubDomains: undefined,
+                preload: undefined
+              },
+              xFrameOptions: {
+                present: headerChecks.some(h => h.id === 'x-frame-options' && h.status === 'pass'),
+                value: undefined
+              },
+              contentSecurityPolicy: {
+                present: headerChecks.some(h => h.id === 'csp-implemented' && h.status === 'pass'),
+                policies: undefined,
+                unsafeDirectives: undefined
+              },
+              xContentTypeOptions: {
+                present: headerChecks.some(h => h.id === 'x-content-type-options' && h.status === 'pass'),
+                value: undefined
+              },
+              serverInfo: {
+                present: false,
+                value: undefined
+              }
+            };
           }
         }
       })
