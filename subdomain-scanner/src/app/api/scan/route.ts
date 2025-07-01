@@ -5359,7 +5359,8 @@ async function checkDHParameters(domain: string): Promise<{ strong: boolean; com
       rejectUnauthorized: false
     });
 
-    const dhParam = socket.getFinished()?.length || 0;
+    const finished = socket.getFinished();
+    const dhParam = finished ? finished.length : 0;
     socket.end();
 
     // DH parameters less than 2048 bits are considered weak
@@ -5429,7 +5430,11 @@ async function checkCAA(domain: string): Promise<SecurityCheck> {
     const dns = require('dns').promises;
     
     try {
-      const caaRecords = await dns.resolve(domain, 'CAA');
+      interface CAARecord {
+        tag: string;
+        value: string;
+      }
+      const caaRecords = await dns.resolve(domain, 'CAA') as CAARecord[];
       
       if (caaRecords && caaRecords.length > 0) {
         const authorizedCAs = caaRecords
