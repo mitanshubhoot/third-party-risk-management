@@ -5223,7 +5223,7 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
     // Use promise-based approach for better error handling
     const tlsInfo = await new Promise<{
       cipherInfo: any;
-      protocol: string;
+      protocol: string | null;
       cert: any;
     }>((resolve, reject) => {
       const socket = tls.connect({
@@ -5234,7 +5234,7 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
       }, () => {
         try {
           const cipherInfo = socket.getCipher();
-          const protocol = socket.getProtocol();
+          const protocol = socket.getProtocol() ?? 'unknown';
           const cert = socket.getPeerCertificate(true);
           
           socket.end();
@@ -5277,9 +5277,12 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
       severity: 'high'
     });
 
+    // Get protocol version once
+    const tlsProtocol = tlsInfo.protocol ?? 'unknown';
+
     // Check for insecure SSL/TLS versions
     const insecureVersions = ['SSLv2', 'SSLv3', 'TLSv1.0', 'TLSv1.1'];
-    const hasInsecureVersion = insecureVersions.includes(tlsInfo.protocol);
+    const hasInsecureVersion = insecureVersions.includes(tlsProtocol);
 
     checks.push({
       id: 'ssl-tls-versions',
@@ -5287,8 +5290,8 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
       description: 'Check for insecure SSL/TLS protocol versions',
       status: hasInsecureVersion ? 'fail' : 'pass',
       details: hasInsecureVersion
-        ? `Insecure protocol version in use: ${tlsInfo.protocol}`
-        : `Secure protocol version in use: ${tlsInfo.protocol}`,
+        ? `Insecure protocol version in use: ${tlsProtocol}`
+        : `Secure protocol version in use: ${tlsProtocol}`,
       severity: 'high'
     });
 
@@ -5325,7 +5328,7 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
 
     // Basic TLS version check
     const secureTLSVersions = ['TLSv1.2', 'TLSv1.3'];
-    const isSecureTLS = secureTLSVersions.includes(tlsInfo.protocol);
+    const isSecureTLS = secureTLSVersions.includes(tlsProtocol);
 
     checks.push({
       id: 'secure-tls-version',
@@ -5333,8 +5336,8 @@ async function checkSSLTLSParameters(domain: string): Promise<SecurityCheck[]> {
       description: 'Check if secure TLS version is used',
       status: isSecureTLS ? 'pass' : 'warning',
       details: isSecureTLS
-        ? `Secure TLS version in use: ${tlsInfo.protocol}`
-        : `Consider upgrading TLS version: ${tlsInfo.protocol}`,
+        ? `Secure TLS version in use: ${tlsProtocol}`
+        : `Consider upgrading TLS version: ${tlsProtocol}`,
       severity: isSecureTLS ? 'low' : 'medium'
     });
 
@@ -5359,8 +5362,8 @@ async function checkDHParameters(domain: string): Promise<{ strong: boolean; com
       rejectUnauthorized: false
     });
 
-    const finished = socket.getFinished() as string | null;
-    const dhParam = finished ? Buffer.from(finished).length : 0;
+    const finished = socket.getFinished();
+    const dhParam = finished ? (Buffer.isBuffer(finished) ? finished.length : Buffer.from(finished).length) : 0;
     socket.end();
 
     // DH parameters less than 2048 bits are considered weak
