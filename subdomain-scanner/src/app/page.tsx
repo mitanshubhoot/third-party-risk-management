@@ -188,8 +188,7 @@ export default function Home() {
   const [domain, setDomain] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
-  const [, setSecurityData] = useState<{
-    headers?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [securityData, setSecurityData] = useState<{
     assessment?: SecurityAssessment;
   } | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -231,7 +230,6 @@ export default function Home() {
   const handleViewSecurity = (subdomain: Subdomain) => {
     setSelectedDomain(subdomain.domain);
     setSecurityData({
-      headers: subdomain.security_headers,
       assessment: subdomain.security_assessment
     });
     setIsSheetOpen(true);
