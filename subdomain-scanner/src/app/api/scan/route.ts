@@ -17,6 +17,7 @@ import tls from 'tls';
 import https from 'https';
 import { TLSSocket } from 'tls';
 import { DetailedPeerCertificate } from 'tls';
+import { type Socket } from 'net';
 
 const execAsync = promisify(exec);
 
@@ -3984,7 +3985,7 @@ async function checkMySQLPort(domain: string): Promise<SecurityCheck> {
         socket.connect(3306, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4050,7 +4051,7 @@ async function checkPortMapper(domain: string): Promise<SecurityCheck> {
         socket.connect(111, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4116,7 +4117,7 @@ async function checkNTPPort(domain: string): Promise<SecurityCheck> {
         socket.connect(123, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4182,7 +4183,7 @@ async function checkPPTPPort(domain: string): Promise<SecurityCheck> {
         socket.connect(1723, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4248,7 +4249,7 @@ async function checkSMTPPort(domain: string): Promise<SecurityCheck> {
         socket.connect(25, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4314,7 +4315,7 @@ async function checkSSHPort(domain: string): Promise<SecurityCheck> {
         socket.connect(22, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4380,7 +4381,7 @@ async function checkCustomPort(domain: string, port: number, name: string, descr
         socket.connect(port, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
@@ -4446,7 +4447,7 @@ async function checkDNSPort(domain: string): Promise<SecurityCheck> {
         socket.connect(53, ip, () => {
           reject(new Error('Port is open'));
         });
-        socket.on('error', (err) => {
+        socket.on('error', (err: { message: string }) => {
           if (err.message.includes('ECONNREFUSED')) {
             resolve('Port is closed');
           } else {
