@@ -188,7 +188,7 @@ export default function Home() {
   const [domain, setDomain] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
-  const [securityData, setSecurityData] = useState<{
+  const [, setSecurityData] = useState<{
     assessment?: SecurityAssessment;
   } | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
