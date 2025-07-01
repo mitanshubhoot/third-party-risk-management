@@ -4539,7 +4539,7 @@ async function checkHTTPPort(domain: string): Promise<SecurityCheck> {
 
 async function checkHTTPSPort(domain: string): Promise<SecurityCheck> {
   try {
-    const isOpen = await checkPort(domain, 443);
+    const isOpen = await checkCustomPort(domain, 443, 'HTTPS', 'Check if HTTPS port is exposed');
     return {
       id: 'https-port',
       name: 'HTTPS Port',
