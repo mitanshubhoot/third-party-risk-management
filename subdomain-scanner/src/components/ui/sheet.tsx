@@ -36,7 +36,6 @@ interface SheetContentProps extends React.ComponentPropsWithoutRef<typeof SheetP
   side?: "top" | "right" | "bottom" | "left"
   domain?: string
   securityData?: {
-    headers?: any // eslint-disable-line @typescript-eslint/no-explicit-any
     assessment?: {
       domain: string
       lastChecked: string
@@ -98,10 +97,10 @@ const SheetContent = React.forwardRef<
             </div>
           )}
 
-          {securityData?.headers && (
+          {securityData?.assessment && (
             <div>
               <h3 className="text-lg font-semibold mb-4">Security Headers</h3>
-              <SecurityHeaders headers={securityData.headers} />
+              <SecurityHeaders checks={securityData.assessment.checks} />
             </div>
           )}
 
