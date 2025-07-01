@@ -5359,7 +5359,8 @@ async function checkDHParameters(domain: string): Promise<{ strong: boolean; com
       rejectUnauthorized: false
     });
 
-    const dhParam = socket.getFinished()?.length ?? 0;
+    const finished = socket.getFinished() as string | null;
+    const dhParam = finished ? Buffer.from(finished).length : 0;
     socket.end();
 
     // DH parameters less than 2048 bits are considered weak
