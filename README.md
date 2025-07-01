@@ -1,143 +1,145 @@
-# Domain Security Assessment Scanner
+# Third-Party Risk Management System
 
-A comprehensive security assessment tool for domains that performs subdomain discovery and extensive security checks, built with Next.js and TypeScript.
+A comprehensive security posture assessment platform that helps evaluate and monitor the security stance of organizations. This tool combines multiple security assessment capabilities including domain security analysis, infrastructure scanning, and security controls verification.
 
-## Features
+## 🛡️ Key Features
 
-### Subdomain Discovery
-- **Subfinder integration**: Uses the powerful FOSS tool for subdomain enumeration
-- **Certificate Transparency**: Queries crt.sh for certificate-based subdomain discovery
-- **Multiple source aggregation**: Combines results from various sources for comprehensive coverage
+### 1. Security Posture Assessment
+- 100+ Security Checks across multiple categories:
+  - Network Security
+  - Application Security
+  - DNS Health
+  - SSL/TLS Analysis
+  - Infrastructure Security
+  - Web Security Headers
+  - Malware Detection
+  - Security Controls
+  - Compliance Status
 
-### Security Assessment
-- **13+ Security Checks**: Comprehensive security analysis including:
-  - SSL/TLS Certificate validation and expiration
-  - Security headers analysis (HSTS, CSP, X-Frame-Options, etc.)
-  - Domain expiration monitoring with tiered warnings
-  - SSL/TLS configuration and cipher suite analysis
-  - DMARC and SPF record validation
-  - Subdomain takeover vulnerability detection
-  - HTTP to HTTPS redirect verification
-  - DNS configuration checks (MX records)
-  - SSL certificate revocation status
+### 2. Domain Security Analysis
+- Comprehensive subdomain enumeration using multiple sources:
+  - Subfinder
+  - crt.sh
+  - AlienVault OTX
+- DNS health checking
+- SSL/TLS certificate analysis
+- Security headers verification
 
-### Modern UI
-- **Real-time scanning**: Live status updates during scan operations
-- **Interactive security panel**: Sliding panel with detailed security assessment results
-- **Color-coded results**: Visual indicators for security status (pass/fail/warning/info)
-- **Severity levels**: Clear risk categorization (low/medium/high/critical)
-- **Responsive design**: Built with Tailwind CSS and shadcn/ui components
+### 3. Infrastructure Analysis
+- Port scanning and service detection
+- Network security assessment
+- Vulnerability identification
+- Third-party integration scanning
+- IP reputation checking
 
-## Tech Stack
+### 4. Security Controls Verification
+- Security headers implementation
+- Access control measures
+- Authentication mechanisms
+- Data protection practices
+- Network security controls
 
-- **Framework**: [Next.js](https://nextjs.org/) 15.3+ with React 19
-- **Language**: [TypeScript](https://www.typescriptlang.org/) for type safety
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom design system
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) and [Radix UI](https://www.radix-ui.com/)
-- **State Management**: [TanStack Query](https://tanstack.com/query/latest) for data fetching
-- **Security Libraries**: 
-  - `node-forge` for certificate analysis
-  - `whois-json` for domain information
-  - Native Node.js `tls` and `https` modules
-- **Schema Validation**: [Zod](https://zod.dev/) for runtime type checking
+### 5. Reporting and Analytics
+- Detailed security assessment reports
+- Risk scoring and prioritization
+- Historical trend analysis
+- Compliance status tracking
+- Actionable recommendations
 
-## Prerequisites
+## 📋 Prerequisites
 
-- **Node.js** 18+ and npm
-- **Go** (for Subfinder installation)
+Before you begin, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
+- [npm](https://www.npmjs.com/) (v8.0.0 or higher)
+- Modern web browser (Chrome, Firefox, Safari, or Edge)
 
-## Installation
+## 🚀 Installation
 
-1. **Install Subfinder** (required for subdomain discovery):
-```bash
-go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mitanshubhoot/third-party-risk-management.git
+   cd third-party-risk-management
+   ```
 
-2. **Install project dependencies**:
-```bash
-cd subdomain-scanner
-npm install
-```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Development
+## 💻 Usage
 
-Run the development server:
+1. Start the application:
+   ```bash
+   cd subdomain-scanner
+   npm run dev
+   ```
+   The application will start on http://localhost:3000 by default.
 
-```bash
-cd subdomain-scanner
-npm run dev
-```
+2. Enter the target domain or company identifier
+3. Select the type of assessment you want to perform
+4. Review the comprehensive security analysis results
 
-Open [http://localhost:3000](http://localhost:3000) to access the application.
+## 📊 Assessment Categories
 
-## API Reference
+1. **Network Security**
+   - Port scanning
+   - Service identification
+   - Network vulnerability assessment
+   - Firewall rule analysis
 
-### POST /api/scan
-Performs comprehensive domain scanning and security assessment.
+2. **Application Security**
+   - Web application scanning
+   - API security testing
+   - Security headers analysis
+   - Framework vulnerability checking
 
-**Request Body:**
-```json
-{
-  "domain": "example.com"
-}
-```
+3. **DNS Health**
+   - DNS record analysis
+   - Domain configuration verification
+   - DNS security extensions
+   - Zone transfer testing
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "domain": "subdomain.example.com",
-      "source": "subfinder",
-      "ip_address": "1.2.3.4",
-      "is_active": true,
-      "security_headers": { ... },
-      "security_assessment": {
-        "domain": "subdomain.example.com",
-        "lastChecked": "2024-01-01T00:00:00Z",
-        "overallRisk": "medium",
-        "passedChecks": 8,
-        "totalChecks": 13,
-        "checks": [ ... ]
-      }
-    }
-  ]
-}
-```
+4. **Infrastructure Security**
+   - Server security assessment
+   - Cloud service configuration
+   - Infrastructure vulnerability scanning
+   - Security control verification
 
-## Security Checks Performed
+5. **Compliance & Standards**
+   - Security control mapping
+   - Best practice alignment
+   - Regulatory requirement checking
+   - Industry standard compliance
 
-1. **SSL Certificate Validation** - Verifies certificate validity and hostname matching
-2. **SSL Certificate Expiration** - Monitors certificate expiration with early warnings
-3. **Security Headers** - Analyzes HSTS, CSP, X-Frame-Options, and other security headers
-4. **Domain Expiration** - Checks domain registration expiration dates
-5. **SSL/TLS Configuration** - Validates TLS versions and cipher suites
-6. **DMARC Policy** - Email authentication policy validation
-7. **SPF Records** - Sender Policy Framework validation
-8. **HTTP to HTTPS Redirect** - Ensures proper security redirects
-9. **DNS MX Records** - Mail exchange record configuration
-10. **Subdomain Takeover** - Checks for vulnerable CNAME records
-11. **SSL Certificate Revocation** - Validates certificate revocation status
-12. **Weak TLS Ciphers** - Identifies weak encryption algorithms
-13. **SSL/TLS Security Parameters** - Comprehensive TLS security analysis
+## 🔍 Security Checks
 
-## Project Structure
+The system performs over 100 security checks including:
+- SSL/TLS configuration
+- Security header implementation
+- DNS security measures
+- Network security controls
+- Application security testing
+- Infrastructure vulnerability scanning
+- Third-party service integration
+- Access control verification
+- Authentication mechanisms
+- Data protection measures
 
-```
-subdomain-scanner/
-├── src/
-│   ├── app/
-│   │   ├── api/scan/          # API endpoints
-│   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Main application
-│   ├── components/ui/         # Reusable UI components
-│   ├── lib/                   # Utility functions
-│   └── types/                 # TypeScript type definitions
-├── public/                    # Static assets
-└── package.json              # Dependencies and scripts
-```
+## 🤝 Contributing
 
-## License
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-MIT License 
+## 📝 License
+
+[Add your license information here]
+
+## 🔒 Security
+
+For security issues, please contact [your contact information]
+
+## 📚 Documentation
+
+For detailed documentation about each component:
+- [Security Checks Documentation](./SECURITY_CHECKS_ANALYSIS/README.md)
+- [WhatWeb Scanner](./WhatWeb/README.md)
+- [Subdomain Scanner](./subdomain-scanner/README.md) 
