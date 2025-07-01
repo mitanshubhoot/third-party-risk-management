@@ -1,4 +1,16 @@
 {
+  "name": "third-party-risk-management",
+  "version": "1.0.0",
+  "description": "Comprehensive security posture assessment platform",
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "scripts": {
+    "postinstall": "cd subdomain-scanner && npm install",
+    "start": "cd subdomain-scanner && npm start",
+    "build": "cd subdomain-scanner && npm run build",
+    "dev": "cd subdomain-scanner && npm run dev"
+  },
   "dependencies": {
     "axios": "^1.10.0",
     "cheerio": "^1.1.0"
