@@ -49,35 +49,75 @@ A comprehensive security posture assessment platform that helps evaluate and mon
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
-- [npm](https://www.npmjs.com/) (v8.0.0 or higher)
+- Node.js 20.18.1 or higher (Required)
+- npm 8.0.0 or higher
+- Ruby (for WhatWeb component)
 - Modern web browser (Chrome, Firefox, Safari, or Edge)
 
-## 🚀 Installation
+## 🚀 Detailed Installation Steps
 
-1. Clone the repository:
+1. **Install Node Version Manager (nvm)**
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   ```
+   After installation, close and reopen your terminal, or run:
+   ```bash
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+   ```
+
+2. **Install the Required Node.js Version**
+   ```bash
+   nvm install 20
+   nvm use 20
+   ```
+
+3. **Clone the Repository**
    ```bash
    git clone https://github.com/mitanshubhoot/third-party-risk-management.git
    cd third-party-risk-management
    ```
 
-2. Install dependencies:
+4. **Install Dependencies**
    ```bash
+   # Navigate to the subdomain scanner directory
+   cd subdomain-scanner
+   
+   # Clean npm cache and install dependencies
+   npm cache clean --force
+   npm install
+   ```
+
+5. **Start the Development Server**
+   ```bash
+   npm run dev
+   ```
+   The application will be available at http://localhost:3000
+
+### Troubleshooting Common Issues
+
+1. **"Unsupported engine" Warning**
+   If you see this warning, it means you're using an incompatible Node.js version. Follow steps 1-2 above to install the correct version.
+
+2. **Port 3000 Already in Use**
+   Start the server on a different port:
+   ```bash
+   npm run dev -- -p 3001
+   ```
+
+3. **Dependencies Issues**
+   Try cleaning and reinstalling:
+   ```bash
+   npm cache clean --force
+   rm -rf node_modules package-lock.json
    npm install
    ```
 
 ## 💻 Usage
 
-1. Start the application:
-   ```bash
-   cd subdomain-scanner
-   npm run dev
-   ```
-   The application will start on http://localhost:3000 by default.
-
-2. Enter the target domain or company identifier
-3. Select the type of assessment you want to perform
-4. Review the comprehensive security analysis results
+1. Enter the target domain or company identifier
+2. Select the type of assessment you want to perform
+3. Review the comprehensive security analysis results
 
 ## 📊 Assessment Categories
 

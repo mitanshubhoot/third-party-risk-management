@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: third-party-risk-management
+    env: node
+    buildCommand: cd subdomain-scanner && npm install && npm run build
+    startCommand: cd subdomain-scanner && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.1
+    autoDeploy: true 
