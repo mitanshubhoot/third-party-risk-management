@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronRight, ExternalLink, Shield, Globe, Package } from 'lucide-react';
+import { ChevronRight, Shield, Globe, Package } from 'lucide-react';
 import { useState } from 'react';
 
 interface FourthPartyIntegration {
@@ -56,7 +56,7 @@ const getVendorIcon = (vendor: string) => {
 };
 
 // Get vendor domain
-const getVendorDomain = (vendor: string, category: string) => {
+const getVendorDomain = (vendor: string) => {
   const vendorLower = vendor.toLowerCase();
   
   if (vendorLower.includes('cloudflare')) return 'cloudflare.com';
@@ -196,7 +196,7 @@ export function FourthPartyIntegrations({ integrations }: FourthPartyIntegration
               const primaryIntegration = integrations[0];
               const uniqueProducts = [...new Set(integrations.flatMap(i => i.products))];
               const productCount = uniqueProducts.length;
-              const vendorDomain = getVendorDomain(vendor, primaryIntegration.category);
+              const vendorDomain = getVendorDomain(vendor);
               const isExpanded = expandedVendors.has(vendor);
               
               return (

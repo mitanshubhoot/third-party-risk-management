@@ -1,5 +1,5 @@
-import { Badge } from "./badge";
-import { Card } from "./card";
+// import { Badge } from "./badge";
+// import { Card } from "./card";
 
 interface SecurityCheck {
   id: string;
@@ -73,28 +73,15 @@ export function SecurityAssessment({ assessment }: SecurityAssessmentProps) {
   });
 
   const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'pass':
+    switch (status) {
+      case 'pass':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'fail':
         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-    case 'warning':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-    default:
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-  }
-  };
-
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-      case 'high':
-        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300';
-      case 'medium':
+      case 'warning':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
       default:
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
     }
   };
 

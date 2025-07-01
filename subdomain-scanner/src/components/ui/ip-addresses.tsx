@@ -31,16 +31,6 @@ interface IPAddress {
 
 interface IPAddressesProps {
   ipAddresses: IPAddress[];
-  sourceStats?: {
-    totalUnique: number;
-    sources: {
-      [key: string]: {
-        count: number;
-        active: boolean;
-        ips: string[];
-      };
-    };
-  };
 }
 
 function getRiskBadgeVariant(risk: 'LOW' | 'MEDIUM' | 'HIGH' | undefined): 'destructive' | 'secondary' | 'default' | 'outline' {
@@ -69,7 +59,7 @@ function getUniqueServices(services: ServiceInfo[]): ServiceInfo[] {
   return Array.from(uniqueMap.values());
 }
 
-export function IPAddresses({ ipAddresses, sourceStats }: IPAddressesProps) {
+export function IPAddresses({ ipAddresses }: IPAddressesProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
