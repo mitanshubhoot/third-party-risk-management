@@ -31,6 +31,16 @@ interface IPAddress {
 
 interface IPAddressesProps {
   ipAddresses: IPAddress[];
+  sourceStats?: {
+    totalUnique: number;
+    sources: {
+      [key: string]: {
+        count: number;
+        active: boolean;
+        ips: string[];
+      };
+    };
+  };
 }
 
 function getRiskBadgeVariant(risk: 'LOW' | 'MEDIUM' | 'HIGH' | undefined): 'destructive' | 'secondary' | 'default' | 'outline' {
@@ -59,13 +69,36 @@ function getUniqueServices(services: ServiceInfo[]): ServiceInfo[] {
   return Array.from(uniqueMap.values());
 }
 
-export function IPAddresses({ ipAddresses }: IPAddressesProps) {
+export function IPAddresses({ ipAddresses, sourceStats }: IPAddressesProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">IP Addresses</h2>
-        <Badge variant="secondary">{ipAddresses.length} addresses found</Badge>
+        <div className="flex items-center gap-2">
+          {sourceStats && (
+            <Badge variant="outline">{sourceStats.totalUnique} unique sources</Badge>
+          )}
+          <Badge variant="secondary">{ipAddresses.length} addresses found</Badge>
+        </div>
       </div>
+
+      {sourceStats && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Object.entries(sourceStats.sources).map(([source, stats]) => (
+            <Card key={source} className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold capitalize">{source}</h3>
+                <Badge variant={stats.active ? "default" : "secondary"}>
+                  {stats.count} IPs
+                </Badge>
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Status: {stats.active ? "Active" : "Inactive"}
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
 
 
 
