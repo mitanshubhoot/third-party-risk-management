@@ -5452,9 +5452,9 @@ async function checkCAA(domain: string): Promise<SecurityCheck> {
           severity: 'medium'
         };
       }
-    } catch (error) {
+    } catch (error: unknown) {
       // ENODATA or ENOTFOUND means no CAA records
-      if (error.code === 'ENODATA' || error.code === 'ENOTFOUND') {
+      if (error && typeof error === 'object' && 'code' in error && (error.code === 'ENODATA' || error.code === 'ENOTFOUND')) {
         return {
           id: 'caa-enabled',
           name: 'CAA not enabled',
@@ -6026,8 +6026,9 @@ async function performSecurityAssessment(domain: string): Promise<SecurityAssess
       checks,
       overallRisk,
       passedChecks,
-      totalChecks: checks.length
-    };
+      totalChecks: checks.length,
+      riskScore: {} as RiskScore
+    } as SecurityAssessment;
 
     // Calculate risk score using UpGuard-style algorithm
     const riskScore = calculateDomainRiskScore(securityAssessment);
@@ -6192,28 +6193,28 @@ async function checkDetailedIPReputation(domain: string): Promise<ThreatInfo> {
       details: {
         recentThreats: {
           malware: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.MALWARE))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.MALWARE)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.MALWARE))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.MALWARE)))
           },
           botnet: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BOTNET))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BOTNET)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BOTNET))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BOTNET)))
           },
           bruteForce: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BRUTE_FORCE))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BRUTE_FORCE)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BRUTE_FORCE))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.BRUTE_FORCE)))
           },
           scanning: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.SCANNING))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.SCANNING)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.SCANNING))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.SCANNING)))
           },
           phishing: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.PHISHING))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.PHISHING)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.PHISHING))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.PHISHING)))
           },
           unwantedSoftware: {
-            last30Days: Boolean(data30Days.data.totalReports > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.UNWANTED_SOFTWARE))),
-            last90Days: Boolean(data90Days.data.totalReports > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.UNWANTED_SOFTWARE)))
+            last30Days: Boolean((data30Days.data.totalReports ?? 0) > 0 && data30Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.UNWANTED_SOFTWARE))),
+            last90Days: Boolean((data90Days.data.totalReports ?? 0) > 0 && data90Days.data.reports?.some((r) => r.categories?.includes(ABUSE_CATEGORIES.UNWANTED_SOFTWARE)))
           }
         }
       }
